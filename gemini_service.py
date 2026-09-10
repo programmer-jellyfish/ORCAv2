@@ -294,18 +294,12 @@ def fallback_explanation(intent, data, language):
                     f"{z['wave_height_m']} m, sea surface temperature {z['sea_surface_temperature_c']}\u00b0C "
                     f"(source: {z['data_source']})."
                 )
-
-        else:  # general overview / query not understood
+    else:  # general overview / query not understood
         lines.append(
             "இந்த கேள்வியை ORCA முழுமையாக புரிந்து கொள்ளவில்லை. கிடைக்கக்கூடிய பொதுவான தகவல் கீழே உள்ளது:" if ta
             else "ORCA couldn't fully interpret that query. Here's the general insight available right now:"
         )
         for z in focus_zones:
             lines.append(_zone_line(z, language))
-        if recommended:
-            lines.append(
-                f"பாதுகாப்பு மற்றும் மீன்பிடி வாய்ப்பை சமநிலைப்படுத்தி, மண்டலம் {recommended} பரிந்துரைக்கப்படுகிறது." if ta
-                else f"Balancing safety and fishing potential, Zone {recommended} is the recommended choice."
-            )
 
     return " ".join(str(l) for l in lines if l)
