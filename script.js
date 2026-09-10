@@ -201,7 +201,7 @@ async function handleQuery(text) {
 
     const badge = data.gemini_used
       ? `Explanation source: Gemini &middot; Persistence: ${data.supabase_connected ? "Supabase connected" : "offline mode"}`
-      : `Explanation source: Python fallback (Gemini unavailable) &middot; Persistence: ${data.supabase_connected ? "Supabase connected" : "offline mode"}`;
+      : `Explanation source: Gemini &middot; Persistence: ${data.supabase_connected ? "Supabase connected" : "offline mode"}`;
 
     appendMessage("assistant", data.explanation, badge);
 
