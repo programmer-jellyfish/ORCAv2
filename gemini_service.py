@@ -295,7 +295,11 @@ def fallback_explanation(intent, data, language):
                     f"(source: {z['data_source']})."
                 )
 
-    else:  # general overview
+        else:  # general overview / query not understood
+        lines.append(
+            "இந்த கேள்வியை ORCA முழுமையாக புரிந்து கொள்ளவில்லை. கிடைக்கக்கூடிய பொதுவான தகவல் கீழே உள்ளது:" if ta
+            else "ORCA couldn't fully interpret that query. Here's the general insight available right now:"
+        )
         for z in focus_zones:
             lines.append(_zone_line(z, language))
         if recommended:
