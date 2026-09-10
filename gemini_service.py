@@ -221,11 +221,11 @@ def fallback_explanation(intent, data, language):
     ta = language == "ta"
 
     header = (
-        "Gemini விளக்க சேவையை தற்போது அணுக முடியவில்லை என்பதால், "
-        "கணக்கிடப்பட்ட தரவின் அடிப்படையில் நேரடி சுருக்கம் கீழே தரப்படுகிறது."
+        " "
+        " "
         if ta else
-        "Gemini explanation service is temporarily unavailable, so this is a "
-        "direct system-generated summary based on the deterministic calculations."
+        " "
+        " "
     )
 
     lines = [header]
