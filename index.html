@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORCA &mdash; Marine EcOsystem Reasoning with Collaborative Agents</title>
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-block">
+      <span class="brand-mark">ORCA</span>
+      <span class="brand-full">Marine EcOsystem Reasoning with Collaborative Agents</span>
+    </div>
+
+    <div class="header-right">
+      <div class="lang-toggle" role="group" aria-label="Response language">
+        <button class="lang-btn active" data-lang="en" id="btnEnglish">EN</button>
+        <button class="lang-btn" data-lang="ta" id="btnTamil">TA</button>
+      </div>
+      <div class="status-bar" id="statusBar">
+        <div class="status-chip" data-key="weather_api">
+          <span class="status-dot" id="dotWeather"></span>
+          <span>Weather API</span>
+        </div>
+        <div class="status-chip" data-key="marine_api">
+          <span class="status-dot" id="dotMarine"></span>
+          <span>Marine API</span>
+        </div>
+        <div class="status-chip" data-key="gemini">
+          <span class="status-dot" id="dotGemini"></span>
+          <span>Gemini</span>
+        </div>
+        <div class="status-chip" data-key="supabase">
+          <span class="status-dot" id="dotSupabase"></span>
+          <span>Database</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-subline">Advisory Intelligence System &mdash; ISRO Ocean &amp; Fisheries Decision Support Prototype</div>
+</header>
+
+<main class="app-shell">
+
+  <section class="panel conversation-panel">
+    <div class="panel-heading">
+      <h2>Conversational Analysis</h2>
+      <span class="panel-caption">Ask about safety, zone selection, comparisons, or current conditions</span>
+    </div>
+
+    <div class="chat-log" id="chatLog">
+      <div class="chat-message assistant">
+        <div class="message-role">ORCA</div>
+        <div class="message-body">
+          System initialized. I can evaluate live marine and weather conditions across three demo fishing
+          zones and provide a safety-weighted recommendation. Select a suggested query below or type your
+          own question to begin.
+        </div>
+      </div>
+    </div>
+
+    <div class="suggested-queries" id="suggestedQueries">
+      <button class="suggested-btn" data-query="Is it safe to go fishing today?">Is it safe to go fishing?</button>
+      <button class="suggested-btn" data-query="Which fishing zone is best right now?">Which zone is best?</button>
+      <button class="suggested-btn" data-query="Compare Zone A and Zone B">Compare Zone A and Zone B</button>
+      <button class="suggested-btn" data-query="What are the current sea conditions?">Current sea conditions</button>
+      <button class="suggested-btn" data-query="Why was this zone recommended?">Why this recommendation?</button>
+      <button class="suggested-btn" data-query="Are there any cyclone or lightning alerts?">Any hazard alerts?</button>
+      <button class="suggested-btn" data-query="Where is the nearest Potential Fishing Zone?">Nearest PFZ?</button>
+      <button class="suggested-btn" data-query="Plan the safest route from Zone A to Zone B">Safest route A &rarr; B</button>
+    </div>
+
+    <form class="query-form" id="queryForm" autocomplete="off">
+      <input type="text" id="queryInput" placeholder="Ask ORCA about fishing safety, zones, or sea conditions..." />
+      <button type="submit" id="sendBtn">Analyze</button>
+    </form>
+  </section>
+
+  <section class="panel pipeline-panel">
+    <div class="panel-heading">
+      <h2>Agent Execution Pipeline</h2>
+      <span class="panel-caption">Query Analyzer &rarr; Task Planner &rarr; Weather Agent &rarr; Ocean Agent &rarr; Fishing Agent &rarr; Risk Engine &rarr; Recommendation Engine &rarr; Gemini Explanation</span>
+    </div>
+    <ol class="pipeline-list" id="pipelineList"></ol>
+  </section>
+
+  <section class="panel results-panel" id="resultsPanel">
+    <div class="panel-heading">
+      <h2>Analysis Results</h2>
+      <span class="panel-caption" id="resultsCaption">Baseline snapshot across all monitored zones</span>
+    </div>
+
+    <div class="alerts-banner" id="alertsBanner"></div>
+
+    <div class="score-cards" id="scoreCards"></div>
+
+    <div class="subsection">
+      <h3>Geospatial View</h3>
+      <span class="panel-caption">Zones, Potential Fishing Zone hotspots, demo geofence buffers, and any planned route</span>
+      <div id="mapView" class="map-view"></div>
+      <div class="map-legend">
+        <span><i class="legend-dot safe"></i>Safe</span>
+        <span><i class="legend-dot caution"></i>Caution</span>
+        <span><i class="legend-dot unsafe"></i>Unsafe</span>
+        <span><i class="legend-dot pfz"></i>PFZ hotspot</span>
+        <span><i class="legend-dot geofence"></i>Demo geofence buffer</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="routeSection" style="display:none;">
+      <h3>Route Plan</h3>
+      <div class="route-box" id="routeBox"></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Current Marine Conditions</h3>
+      <div class="table-wrap">
+        <table class="conditions-table" id="conditionsTable">
+          <thead>
+            <tr>
+              <th>Zone</th>
+              <th>Wind (km/h)</th>
+              <th>Wave Height (m)</th>
+              <th>Wave Period (s)</th>
+              <th>Sea Temp (&deg;C)</th>
+              <th>Rain Chance (%)</th>
+              <th>Data Source</th>
+            </tr>
+          </thead>
+          <tbody id="conditionsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Recommendation &amp; Evidence</h3>
+      <div class="recommendation-box" id="recommendationBox"></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Zone Comparison</h3>
+      <div class="zone-comparison" id="zoneComparison"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Data Sources: Open-Meteo Weather API &middot; Open-Meteo Marine API &middot; Google Gemini (explanation layer only) &middot; Supabase PostgreSQL</span>
+    <span>Chlorophyll values are demo reference estimates &mdash; not provided by live satellite feeds. Any offline data is clearly labeled.</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

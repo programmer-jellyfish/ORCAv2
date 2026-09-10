@@ -1,0 +1,90 @@
+{
+  "zones": {
+    "A": {
+      "name": "Zone A \u2014 Chennai Coastal Waters",
+      "lat": 12.95,
+      "lon": 80.35,
+      "chlorophyll_mg_m3": 1.4,
+      "description": "Moderate-depth coastal waters with generally stable wind and swell patterns."
+    },
+    "B": {
+      "name": "Zone B \u2014 Offshore Deep Waters",
+      "lat": 13.35,
+      "lon": 80.55,
+      "chlorophyll_mg_m3": 2.8,
+      "description": "Nutrient-rich offshore zone with strong upwelling but higher wind and swell exposure."
+    },
+    "C": {
+      "name": "Zone C \u2014 Southern Coastal Belt",
+      "lat": 12.55,
+      "lon": 80.25,
+      "chlorophyll_mg_m3": 0.9,
+      "description": "Sheltered southern coastal belt with calmer seas but lower biological activity."
+    }
+  },
+  "fallback_weather": {
+    "A": {
+      "wind_speed_kmh": 14.0,
+      "wind_gusts_kmh": 20.0,
+      "precipitation_probability": 10.0,
+      "precipitation_mm": 0.0
+    },
+    "B": {
+      "wind_speed_kmh": 32.0,
+      "wind_gusts_kmh": 48.0,
+      "precipitation_probability": 35.0,
+      "precipitation_mm": 2.1
+    },
+    "C": {
+      "wind_speed_kmh": 18.0,
+      "wind_gusts_kmh": 26.0,
+      "precipitation_probability": 15.0,
+      "precipitation_mm": 0.2
+    }
+  },
+  "fallback_marine": {
+    "A": {
+      "wave_height_m": 0.9,
+      "wave_period_s": 7.0,
+      "swell_wave_height_m": 0.6,
+      "sea_surface_temperature_c": 28.2
+    },
+    "B": {
+      "wave_height_m": 2.6,
+      "wave_period_s": 11.0,
+      "swell_wave_height_m": 1.8,
+      "sea_surface_temperature_c": 29.4
+    },
+    "C": {
+      "wave_height_m": 1.1,
+      "wave_period_s": 6.5,
+      "swell_wave_height_m": 0.7,
+      "sea_surface_temperature_c": 27.6
+    }
+  },
+  "pfz_points": [
+    {"id": "PFZ-1", "name": "PFZ Hotspot North", "lat": 13.42, "lon": 80.62, "nearest_zone": "B", "strength": "high"},
+    {"id": "PFZ-2", "name": "PFZ Hotspot Coastal", "lat": 12.98, "lon": 80.42, "nearest_zone": "A", "strength": "moderate"},
+    {"id": "PFZ-3", "name": "PFZ Hotspot South", "lat": 12.50, "lon": 80.31, "nearest_zone": "C", "strength": "low"}
+  ],
+  "geofence_boundaries": [
+    {
+      "id": "demo-operational-boundary",
+      "name": "Demo Operational Advisory Line",
+      "kind": "illustrative_boundary",
+      "note": "Illustrative demo boundary only \u2014 NOT an official International Maritime Boundary Line or navigational reference. For real coordinates consult INCOIS / Coast Guard notices.",
+      "lat": 13.55,
+      "lon": 80.75,
+      "warning_radius_km": 25
+    },
+    {
+      "id": "demo-marine-protected-area",
+      "name": "Demo Marine Protected Area Buffer",
+      "kind": "protected_area",
+      "note": "Illustrative demo ecologically-sensitive buffer zone for prototype purposes only.",
+      "lat": 13.62,
+      "lon": 80.33,
+      "warning_radius_km": 12
+    }
+  ]
+}
